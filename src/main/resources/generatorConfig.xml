@@ -4,29 +4,46 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
-    <!--JDBC驱动jar包的位置-->
-    <classPathEntry location="./src/test/mysql-connector-java-5.1.44.jar" />
+    <!--详细配置 @see https://blog.csdn.net/testcs_dn/article/details/79295065-->
 
-    <context id="DB2Tables" targetRuntime="MyBatis3">
+
+    <!--JDBC驱动jar包的位置-->
+    <classPathEntry location="./src/lib/mysql-connector-java-5.1.44.jar" />
+
+
+    <context id="mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+
+        <!-- 取消bean备注-->
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
                         connectionURL="jdbc:mysql://192.168.109.144:3306/study?useSSL=false"
                         userId="zhaosc"
                         password="123456">
         </jdbcConnection>
 
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="true" />
+        </javaTypeResolver>
+
+
         <!--
                 Model模型生成器,用来生成含有主键key的类，记录类 以及查询Example类
                 targetPackage     指定生成的model生成所在的包名
                 targetProject     指定在该项目下所在的路径
          -->
+
         <javaModelGenerator targetPackage="com.zsc.demo" targetProject="./src/main/java">
 
             <!-- 是否允许子包，即targetPackage.schemaName.tableName -->
             <property name="enableSubPackages" value="false"/>
             <!-- 是否对model添加构造函数 -->
-            <property name="constructorBased" value="true"/>
+<!--            <property name="constructorBased" value="true"/>-->
             <!-- 是否对类CHAR类型的列的数据进行trim操作 -->
-            <property name="trimStrings" value="true"/>
+<!--            <property name="trimStrings" value="true"/>-->
             <!-- 建立的Model对象是否 不可改变  即生成的Model对象不会有 setter方法，只有构造方法 -->
             <property name="immutable" value="false"/>
         </javaModelGenerator>
@@ -46,6 +63,7 @@
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.zsc.demo"  targetProject="./src/main/java">
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
+
 
         <!--
             table
